@@ -11,7 +11,8 @@ INSERT INTO Status(statusID, status) VALUES
 	
 INSERT INTO "Role"(roleID, "role") VALUES
 	(1,'Administrator'),
-	(2,'User');
+	(2,'Finance-Manager'),
+	(3,'User');
 	
 INSERT INTO Users (userID, username, "password", firstname, lastname, email, "role") VALUES
 	(DEFAULT,'jbrow','wasspord','Jacob', 'Brown','email@gmail.com',1),
