@@ -1,7 +1,7 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { User } from '../model/user';
 import { authUserMiddleware, authRoleFactory } from '../middleware/authMiddleWare';
-import { getAllUsers, addNewUser, getUserById } from '../repository/user-data-access';
+import { getAllUsers, addNewUser, getUserById, updateUser } from '../repository/user-data-access';
 
 export const userRouter: Router = express.Router();
 
@@ -24,11 +24,30 @@ userRouter.post('/', async (req: Request, res: Response) => {
     console.log(req.body)
     if(username && password && firstname && lastname && email && role) {
         await addNewUser(username, password, firstname, lastname, email, role);
+        res.sendStatus(202);
+    } else {
+        res.status(400).send('Please include required fields.');
+    }
+});
+
+userRouter.patch('/', async (req: Request, res: Response) => {
+    let user = req.body
+    let id = user.id
+    let username = user.username || null
+    let password = user.password || null
+    let firstname = user.firstname || null
+    let lastname = user.lastname || null
+    let email = user.email || null
+    let role = user.role || null
+    console.log(req.body)
+    if(id) {
+        await updateUser(id, username, password, firstname, lastname, email, role);
         res.sendStatus(201);
     } else {
         res.status(400).send('Please include required fields.');
     }
 });
+
 
 userRouter.get('/:id', async (req: Request, res: Response) => {
   const id = +req.params.id;

@@ -87,3 +87,35 @@ export async function addNewUser(username: string, password: string, firstname: 
     client && client.release();
   }
 }
+export async function updateUser(id: number, username: string, password: string, firstname: string, lastname: string, email: string, role:string) : Promise<User> {
+    let client : PoolClient = await connectionPool.connect();
+    try {
+      
+      // Actually add the user, with appropriate role_id
+      let updateResult : QueryResult = await client.query(`
+        UPDATE projectzero.users SET
+        username = COALESCE($1, username),
+        "password"= COALESCE($2, "password"),
+        firstname = COALESCE($3, firstname),
+        lastname = COALESCE($4, lastname),
+        email = COALESCE($5, email),
+        "role" = COALESCE($6, "role") 
+        WHERE users.userID = $7;`, [username, password, firstname, lastname, email, role, id]
+      )
+      
+      // Since we're returning the user, pull our newly created user back out of the db:
+      let result : QueryResult = await client.query(
+        `SELECT users.userid, users.username, users.password, users.firstname, users.lastname, users.email, "Role"."role"
+        FROM projectzero.users INNER JOIN projectzero."Role" ON users."role" = "Role".roleid
+        WHERE users.userID = $1;`, [id]
+      );
+  
+      return result.rows.map(
+        (u)=>{return new User(u.id, u.username, u.password, u.firstName, u.lastName, u.email, u.role_name)}
+      )[0];
+    } catch (e) {
+      throw new Error(`Failed to update user in DB: ${e.message}`);
+    } finally {
+      client && client.release();
+    }
+  }
