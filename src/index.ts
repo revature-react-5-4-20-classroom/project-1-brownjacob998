@@ -8,6 +8,7 @@ import { connectionPool } from "./repository";
 import { userRouter} from "./Routers/userRouter";
 import { loggingMiddleware } from "./middleware/loggingMiddleWare"
 import { sessionMiddleware } from "./middleware/sessionMiddleWare";
+import { reimRouter } from './Routers/reimRouter';
 
 const app: Application = express();
 app.use(bodyparser.json())
@@ -45,6 +46,7 @@ app.post('/login', async (req: Request, res: Response) => {
 })
 
 app.use('/users', userRouter);
+app.use('/reimbursements', reimRouter);
 
 app.listen(3000, () => {
     console.log('project 0 has started, testing connection');
