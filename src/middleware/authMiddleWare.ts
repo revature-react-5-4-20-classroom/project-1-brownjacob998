@@ -7,7 +7,7 @@ export const authUserMiddleware = (req: Request, res: Response, next: NextFuncti
   if(req.method === 'GET') { //FMs have the only access to user GETS
     if (req.session && req.session.user && req.session.user.role == 'Finance-Manager'){
       next();
-    } else if (req.session && req.session.user && req.path.toString().split('/').pop() == req.session.user.userID) { //Allow
+    } else if (req.session && req.session.user && req.path.toString().split('/').pop() == req.session.user.userID) { //Allow hole for users to view their own information
       next()
     } else if (req.session && req.session.user){ //Deny to anyone else
       res.status(401).send(`The ${req.method} is unavailable to non-FMs`)
@@ -37,7 +37,9 @@ export const authReimMiddleware = (req: Request, res: Response, next: NextFuncti
       next();
   } else if (req.session && req.session.user && req.method === 'POST') { //Everyone has access to post
       next()
-  } else if (req.session && req.session.user && req.path.toString().substring(0,5) ==='/user' && req.path.toString().split('/').pop() == req.session.user.userID) { //Allow hole for users to get their own reimbursements. Auth handed at endpoint
+  } else if (req.session && req.session.user &&
+     req.path.toString().substring(0,5) ==='/user' &&
+      req.path.toString().split('/').pop() == req.session.user.userID) { //Allow hole for users to get their own reimbursements.
       next()
   } else if (req.session && req.session.user){ //Deny any non-fms for anything else (Patch)
     res.status(401).send(`The ${req.method} is unavailable to non-FMs`)

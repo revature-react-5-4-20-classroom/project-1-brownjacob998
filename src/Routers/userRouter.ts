@@ -9,7 +9,7 @@ export const userRouter: Router = express.Router();
 userRouter.use(authUserMiddleware);
 
 
-userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => { //Get all users
   try {
   const users : User[] = await getAllUsers();
   res.json(users);
@@ -18,7 +18,7 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-userRouter.post('/', async (req: Request, res: Response) => {
+userRouter.post('/', async (req: Request, res: Response) => { //Create new user
     let {username, password, firstname, lastname, email, role} = req.body;
     console.log(req.body)
     if(username && password && firstname && lastname && email && role) {
@@ -29,7 +29,7 @@ userRouter.post('/', async (req: Request, res: Response) => {
     }
 });
 
-userRouter.patch('/', async (req: Request, res: Response) => {
+userRouter.patch('/', async (req: Request, res: Response) => { //Update existing user
     let user = req.body //Create new object from body fields.
     let id = user.id //This should always exist in a proper request
     let username = user.username || null //Check for the field, or set to null for SQL statement
@@ -48,7 +48,7 @@ userRouter.patch('/', async (req: Request, res: Response) => {
 });
 
 
-userRouter.get('/:id', async (req: Request, res: Response) => {
+userRouter.get('/:id', async (req: Request, res: Response) => { //Get specific user by ID
   const id = +req.params.id;
   let user: User[];
   if(isNaN(id)) {

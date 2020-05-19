@@ -48,7 +48,7 @@ reimRouter.use(authReimMiddleware)
       }
   });
   
-//Get Reimbursements by Status
+//Get Reimbursements by Status. FMs only.
   reimRouter.get('/status/:statusID', async (req: Request, res: Response) => {
     const id = +req.params.statusID;
     let reim: Reimbursement[];
@@ -60,7 +60,7 @@ reimRouter.use(authReimMiddleware)
       res.json(reim);
     }
 })
-    reimRouter.get('/user/:userID', async (req: Request, res: Response) => { //Get someone else's reimbursements IF FM
+    reimRouter.get('/user/:userID', async (req: Request, res: Response) => { //Get reimbursement by user ID. FM's have access to all, user can access their own.
     let id = +req.params.userID;
     let reim: Reimbursement[];
     if(isNaN(id)) {
