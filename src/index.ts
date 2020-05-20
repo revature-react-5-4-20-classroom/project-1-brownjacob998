@@ -36,7 +36,12 @@ app.post('/login', async (req: Request, res: Response) => {
             if(req.session) {
                 req.session.user = user
             }
-            res.json(user)
+            if(user) {
+                res.json(user)
+            }
+            else {
+                res.status(400).send('Invalid Credentials')
+            }
         } catch(e) {
             throw new Error(`Failed to login: ${e.message}`);
         } finally {

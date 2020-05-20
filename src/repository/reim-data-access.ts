@@ -125,7 +125,7 @@ export async function updateReim(id: number, author: number, amount: number, dat
          from projectzero.reimbursement, projectzero.users, projectzero.status, projectzero."Type" where reimbursement.reimbursementid = $1 AND reimbursement.author = users.userID AND 
          reimbursement."type" = "Type".typeID AND status.statusID = reimbursement.status;`, [id]
       );
-  
+    console.log(result)
       return result.rows.map(
         (r)=>{return new Reimbursement(r.reimbursementid, r.name, r.amount, r.datesubmitted, r.dateresolved, r.description, r.resolver, r.status, r.type)}
     )[0];

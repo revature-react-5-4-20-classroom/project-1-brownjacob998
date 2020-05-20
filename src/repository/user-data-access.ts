@@ -33,6 +33,7 @@ export async function getUserById(id: number) : Promise<User[]> {
         `SELECT users.userid, users.username, users.password, users.firstname, users.lastname, users.email, "Role"."role"
         FROM projectzero.users, projectzero."Role" WHERE users."role" = "Role".roleid AND users.userid = $1;`, [id]
         );
+        
         return result.rows.map((u) => {
         return new User(u.userid, u.username, u.password, u.firstname, u.lastname, u.email, u.role);
         });
@@ -63,7 +64,7 @@ export async function addNewUser(username: string, password: string, firstname: 
     );
 
     return result.rows.map(
-      (u)=>{return new User(u.id, u.username, u.password, u.firstName, u.lastName, u.email, u.role_name)}
+      (u)=>{return new User(u.id, u.username, u.password, u.firstname, u.lastname, u.email, u.role)}
     )[0];
   } catch (e) {
     throw new Error(`Failed to add user to DB: ${e.message}`);
@@ -91,9 +92,8 @@ export async function updateUser(id: number, username: string, password: string,
         FROM projectzero.users INNER JOIN projectzero."Role" ON users."role" = "Role".roleid
         WHERE users.userID = $1;`, [id]
       );
-  
       return result.rows.map(
-        (u)=>{return new User(u.id, u.username, u.password, u.firstName, u.lastName, u.email, u.role_name)}
+        (u)=>{return new User(u.userid, u.username, u.password, u.firstname, u.lastname, u.email, u.role)}
       )[0];
     } catch (e) {
       throw new Error(`Failed to update user in DB: ${e.message}`);
