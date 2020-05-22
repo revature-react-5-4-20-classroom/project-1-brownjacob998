@@ -50,6 +50,10 @@ app.post('/login', async (req: Request, res: Response) => {
     }   
 })
 
+app.get('new-endpoint', (req: Request, res: Response) => {
+    res.send("Webhooks worked")
+})
+
 app.use('/users', userRouter);
 app.use('/reimbursements', reimRouter);
 
