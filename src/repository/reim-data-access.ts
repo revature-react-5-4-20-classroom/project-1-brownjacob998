@@ -12,7 +12,7 @@ export async function getReimByStatusID(id: number): Promise<Reimbursement[]> {
         `SELECT reimbursement.reimbursementid, users.firstname || ' ' || users.lastname as "name", reimbursement.amount, reimbursement.dateSubmitted, reimbursement.dateResolved, reimbursement.description,
         reimbursement.resolver, status.status, "Type"."type"
          from projectzero.reimbursement, projectzero.users, projectzero.status, projectzero."Type" where reimbursement.author = users.userID AND 
-         reimbursement."type" = "Type".typeID AND reimbursement.status = $1 AND status.statusID = reimbursement.status;`,[id]
+         reimbursement."type" = "Type".typeID AND reimbursement.status = $1 AND status.statusID = reimbursement.status ORDER BY reimbursement.dateSubmitted;`,[id]
     );
     console.log(result)
     return result.rows.map((r) => {
@@ -34,7 +34,7 @@ export async function getReimByUserID(id: number) : Promise<Reimbursement[]> {
             `SELECT reimbursement.reimbursementid, users.firstname || ' ' || users.lastname as "name", reimbursement.amount, reimbursement.dateSubmitted, reimbursement.dateResolved, reimbursement.description,
             reimbursement.resolver, status.status, "Type"."type"
              from projectzero.reimbursement, projectzero.users, projectzero.status, projectzero."Type" where reimbursement.author = $1 AND reimbursement.author = users.userID AND 
-             reimbursement."type" = "Type".typeID AND status.statusID = reimbursement.status;`, [id]
+             reimbursement."type" = "Type".typeID AND status.statusID = reimbursement.status ORDER BY reimbursement.dateSubmitted;`, [id]
         );
         return result.rows.map((r) => {
         return new Reimbursement(r.reimbursementid, r.name, r.amount, r.datesubmitted, r.dateresolved, r.description, r.resolver, r.status, r.type);
