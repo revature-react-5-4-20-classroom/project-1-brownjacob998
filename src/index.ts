@@ -9,6 +9,7 @@ import { userRouter} from "./Routers/userRouter";
 import { loggingMiddleware } from "./middleware/loggingMiddleWare"
 import { sessionMiddleware } from "./middleware/sessionMiddleWare";
 import { reimRouter } from './Routers/reimRouter';
+import {corsFilter} from './middleware/corsFilter'
 
 const app: Application = express();
 app.use(bodyparser.json())
@@ -56,6 +57,7 @@ app.get('new-endpoint', (req: Request, res: Response) => {
 
 app.use('/users', userRouter);
 app.use('/reimbursements', reimRouter);
+app.use(corsFilter)
 
 app.listen(3001, () => {
     console.log('project 0 has started, testing connection');
