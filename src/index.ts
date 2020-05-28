@@ -15,6 +15,8 @@ const app: Application = express();
 app.use(bodyparser.json())
 app.use(sessionMiddleware)
 app.use(loggingMiddleware)
+app.use(corsFilter)
+
 //
 app.post('/login', async (req: Request, res: Response) => {
     const {username, password} = req.body;
@@ -57,7 +59,7 @@ app.get('new-endpoint', (req: Request, res: Response) => {
 
 app.use('/users', userRouter);
 app.use('/reimbursements', reimRouter);
-app.use(corsFilter)
+
 
 app.listen(3001, () => {
     console.log('project 0 has started, testing connection');
