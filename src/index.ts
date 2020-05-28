@@ -57,7 +57,7 @@ app.get('new-endpoint', (req: Request, res: Response) => {
 app.use('/users', userRouter);
 app.use('/reimbursements', reimRouter);
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('project 0 has started, testing connection');
     
     connectionPool.connect().then(()=> {
