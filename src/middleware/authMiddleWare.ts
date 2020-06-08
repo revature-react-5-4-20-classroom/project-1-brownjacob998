@@ -18,7 +18,7 @@ export const authUserMiddleware = (req: Request, res: Response, next: NextFuncti
   if(req.method === 'PATCH') { //FMs have the only access to user GETS
     if (req.session && req.session.user && req.session.user.role == 'Administrator'){
       next();
-    } else if (req.session && req.session.user && req.path.toString().split('/').pop() == req.session.user.userID) { //Allow hole for users to view their own information
+    } else if (req.session && req.session.user && req.body.id == req.session.user.userID) { //Allow hole for users to view their own information
       next()
     } else if (req.session && req.session.user){ //Deny to anyone else
       res.status(401).send(`The ${req.method} is unavailable to non-Admins`)
