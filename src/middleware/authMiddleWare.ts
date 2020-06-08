@@ -15,7 +15,18 @@ export const authUserMiddleware = (req: Request, res: Response, next: NextFuncti
       res.status(401).send('Please login to the appropriate role for this request')
     }
   }
-  else if (req.method !== 'GET') { //Admins have access to post/patch
+  if(req.method === 'PATCH') { //FMs have the only access to user GETS
+    if (req.session && req.session.user && req.session.user.role == 'Administrator'){
+      next();
+    } else if (req.session && req.session.user && req.path.toString().split('/').pop() == req.session.user.userID) { //Allow hole for users to view their own information
+      next()
+    } else if (req.session && req.session.user){ //Deny to anyone else
+      res.status(401).send(`The ${req.method} is unavailable to non-Admins`)
+    } else { //Ask to login if session doesnt't exist
+      res.status(401).send('Please login to the appropriate role for this request')
+    }
+  }
+  else if (req.method === 'POST') { //Admins have access to post/patch
     if (req.session && req.session.user && req.session.user.role == 'Administrator'){
       next();
     } else if (req.session && req.session.user){ //Deny to everyone else
