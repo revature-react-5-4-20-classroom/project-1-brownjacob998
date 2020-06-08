@@ -5,9 +5,9 @@ export class User {
     firstName: string;
     lastName: string;
     email: string;
-    role: number;
+    role: string;
 
-    constructor(id: number, username:string, password: string, first:string, last:string, email:string, role:number) {
+    constructor(id: number, username:string, password: string, first:string, last:string, email:string, role:string) {
         this.userID = id
         this.userName = username
         this.password = password

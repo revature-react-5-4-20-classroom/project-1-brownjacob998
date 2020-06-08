@@ -1,243 +1,50 @@
-# Expense Reimbursement System (ERS) API
+Expense Reimbursement System (ERS)
 The Expense Reimbursement System (ERS) will manage the process of reimbursing employees for expenses incurred while on company time. All employees in the company can login and submit requests for reimbursement and view their past tickets and pending requests. Finance managers can log in and view all reimbursement requests and past history for all employees in the company. Finance managers are authorized to approve and deny requests for expense reimbursement.
 
-# Models
+User stories:
+An Employee can login D
 
-**User**  
-The User model keeps track of users information.
-```javascript
-{
-  userId: number, // primary key
-	username: string, // not null, unique
-	password: string, // not null
-	firstName: string, // not null
-	lastName: string, // not null
-	email: string, // not null
-	role: Role // not null
-}
-```
+An Employee can view the Employee Homepage WIP
 
-**Role**  
-The Role model is used to track what permissions a user has
-```javascript
-{
-  roleId: number, // primary key
-  role: string // not null, unique
-}
-```
+An Employee can logout D
 
-**Reimbursement**  
-The Reimbursement model is used to represent a single reimbursement that an employee would submit
-```javascript
-{
-  reimbursementId: number, // primary key
-	author: number,  // foreign key -> User, not null
-	amount: number,  // not null
-  dateSubmitted: number, // not null
-  dateResolved: number, // not null
-  description: string, // not null
-  resolver: number, // foreign key -> User
-  status: number, // foreign ey -> ReimbursementStatus, not null
-  type: number // foreign key -> ReimbursementType
-}
-```
+An Employee can submit a reimbursement request D
 
+An Employee can upload an image of his/her receipt as part of the reimbursement request (optional) N
 
-**ReimbursementStatus**  
-The ReimbursementStatus model is used to track the status of reimbursements. Status possibilities are `Pending`, `Approved`, or `Denied`.
-```javascript
-{
-  statusId: number, // primary key
-  status: string // not null, unique
-}
-```
+An Employee can view their pending reimbursement requests WIP
 
-**ReimbursementType**  
-The ReimbursementType model is used to track what kind of reimbursement is being submitted. Type possibilities are `Lodging`, `Travel`, `Food`, or `Other`.
-```javascript
-{
-  typeId: number, // primary key
-  type: string, // not null, unique
-}
-```
+An Employee can view their resolved reimbursement requests WIP
 
-# Endpoints
+An Employee can view their information D
 
-## Security
-  Security should be handled through session storage.
-  If a user does not have permission to access a particular endpoint it should return the following:
-  * **Status Code:** 401 UNAUTHORIZED <br />
-    **Content:** 
-    ```javascript
-    {
-      "message": "The incoming token has expired"
-    }
-    ```
-    Occurs if they do not have the appropriate permissions.
+An Employee can update their information D
 
-## Available Endpoints
-  Retreives users from the database
+An Employee receives an email when one of their reimbursement requests is resolved (optional) N
 
-### **Login**  
-* **URL**
-  `/login`
+A Manager can login D
 
-* **Method:**
-  `POST`
+A Manager can view the Manager Homepage WIP
 
-* **Request:**
-  ```javascript
-  {
-    username: string,
-    password: string
-  }
-  ```
+A Manager can logout D
 
-* **Response:**
-    ```javascript
-      User
-    ```
+A Manager can approve/deny pending reimbursement requests D
 
-* **Error Response**
-  * **Status Code:** 400 BAD REQUEST
-  ```javascript
-  {
-    message: "Invalid Credentials"
-  }
-  ```
-### **Find Users**
-* **URL**
-  `/users`
+A Manager can view all pending requests from all employees D
 
-* **Method:**
-  `GET`
+A Manager can view images of the receipts from reimbursement requests (optional) N
 
-* **Allowed Roles** `finance-manager`
+A Manager can view all resolved requests from all employees and see which manager resolved it D
 
-* **Response:**
-    ```javascript
-    [
-      User
-    ]
-    ```
+A Manager can view all Employees D
 
-### **Find Users By Id**  
-* **URL**
-  `/users/:id`
+A Manager can view reimbursement requests from a single Employee D
 
-* **Method:**
-  `GET`
-
-* **Allowed Roles** `finance-manager` or if the id provided matches the id of the current user
-
-* **Response:**
-    ```javascript
-    [
-      User
-    ]
-    ```
-
-### **Update User**  
-* **URL**
-  `/users`
-
-* **Method:**
-  `PATCH`
-
-* **Allowed Roles** `admin`
-
-* **Request**
-  The userId must be presen as well as all fields to update, any field left undefined will not be updated.
-  ```javascript
-    User
-  ```
-
-* **Response:**
-    ```javascript
-      User
-    ```
-
-### **Find Reimbursements By Status**  
-Reimbursements should be ordered by date
-* **URL**
-  `/reimbursements/status/:statusId`  
-  For a challenge you could do this instead:  
-  `/reimbursements/status/:statudId/date-submitted?start=:startDate&end=:endDate`
-
-* **Method:**
-  `GET`
-
-* **Allowed Roles** `finance-manager`
-
-* **Response:**
-    ```javascript
-    [
-      Reimbursement
-    ]
-    ```
-
-### **Find Reimbursements By User**  
-Reimbursements should be ordered by date
-* **URL**
-  `/reimbursements/author/userId/:userId`  
-  For a challenge you could do this instead:  
-  `/reimbursements/author/userId/:userId/date-submitted?start=:startDate&end=:endDate`
-
-* **Method:**
-  `GET`
-
-* **Allowed Roles** `finance-manager` or if ther userId is the user making the request.
-
-* **Response:**
-    ```javascript
-    [
-      Reimbursement
-    ]
-    ```
-
-### **Submit Reimbursement**  
-* **URL**
-  `/reimbursements`
-
-* **Method:**
-  `POST`
-
-* **Rquest:**
-  The reimbursementId should be 0
-  ```javascript
-  Reimbursement
-  ```
-
-* **Response:**
-  * **Status Code** 201 CREATED
-    ```javascript
-      Reimbursement
-    ```
-
-
-### **Update Reimbursement**  
-* **URL**
-  `/reimbursements`
-
-* **Method:**
-  `PATCH`
-
-* **Allowed Roles** `finance-manager`
-
-* **Request**
-  The reimbursementId must be presen as well as all fields to update, any field left undefined will not be updated. This can be used to approve and deny.
-  ```javascript
-    Reimbursement
-  ```
-
-* **Response:**
-    ```javascript
-      Reimbursement
-    ```
-
-# Stretch Goals
-These are not part of the core requirements but are things that could be worked on once the core requirements are done.
-  * Password Hashing
-  * Paging ans Sorting endpoints: [Reference For How](https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design#filter-and-paginate-data)
-  * Using JSON Web Tokens (JWTs) instead of Session Storage
-  * Being able to submit receipts. (I would recommend using AWS S3 buckets for this but if you do be cautious of including AWS Access Keys in your application)
+Technologies:
+TypeScript
+SQL
+React
+Express (from pj0)
+EC2 (pj0 deployed on EC2)
+S3 (deploy frontend in S3 bucket -- no pipeline required)
+Redux is optional
