@@ -4,7 +4,7 @@ import { User } from '../model/user';
 import { FailedLoginError } from '../errors/FailedLoginError';
 
 const ERSClient = axios.create({
-    baseURL: 'http://54.196.11.203:3001',
+    baseURL: 'http://localhost:3001',
     // If you don't have the following line, your login won't work!
     withCredentials: true,
   });
