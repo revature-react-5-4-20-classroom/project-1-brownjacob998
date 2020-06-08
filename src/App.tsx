@@ -36,7 +36,7 @@ export class App extends React.Component<any, IAppState> {
 
     render() {
         return (
-            <>
+            <div style={{marginLeft: 50, marginTop: 50}}>
             <h1>ERS Client</h1>
             <h2>
               Hello {this.state.loggedInUser ?
@@ -76,7 +76,7 @@ export class App extends React.Component<any, IAppState> {
                 </Switch>
             </Router>
             <h4>{!this.state.loggedInUser ? 'Please login before proceeding.' : ''}</h4>
-            </>
+            </div>
         )
         
     }

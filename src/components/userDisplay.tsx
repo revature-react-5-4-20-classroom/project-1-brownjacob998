@@ -37,7 +37,7 @@ export class UserDisplay extends React.Component<any, IUserDisplayState> {
     try {
       this.setState({
         loggedInUser: this.props.loggedInUser[0],
-        users: this.props.loggedInUser,
+        users: await getUser(this.props.loggedInUser.userID),
         usersLoaded: true
       })
     } catch (e) {

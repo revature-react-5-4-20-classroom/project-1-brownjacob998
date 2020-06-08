@@ -64,11 +64,6 @@ export class ReimbursementDisplay extends React.Component<any, IReimDisplayState
       return (
         <Container>
           <Row>
-          {/*(this.state.loggedInUser) ?
-            <Col md={{ size: 8 }}>
-              {(this.state.loggedInUser.role == 'Finance-Manager') ?<h4>User Information</h4>:<h4>Your Information</h4>}
-                <QuickTable rows={this.state.reim.map((r:Reimbursement)=>{return `${r.reimID} ${r.author} ${r.amount} ${r.dateSubmitted} ${r.dateResolved} ${r.resolver} ${r.status} ${r.type}`})}/>
-          </Col>:<></>*/}
           {(this.state.loggedInUser) && this.state.loggedInUser.role == 'Finance-Manager' ?
             <Col>
                <h4>Get User's Reimbursements</h4>
