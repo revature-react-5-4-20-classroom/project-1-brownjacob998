@@ -21,7 +21,7 @@ export const authUserMiddleware = (req: Request, res: Response, next: NextFuncti
     } else if (req.session && req.session.user && req.body.id == req.session.user.userID) { //Allow hole for users to view their own information
       next()
     } else if (req.session && req.session.user){ //Deny to anyone else
-      res.status(401).send(`The ${req.method} is unavailable to non-Admins`)
+      res.status(401).send(`The ${req.method} is unavailable to non-Admins ${req.body.id} ${req.session.user.userID}`)
     } else { //Ask to login if session doesnt't exist
       res.status(401).send('Please login to the appropriate role for this request')
     }
